@@ -1,7 +1,7 @@
 using MoonSharp.Interpreter;
 using UnityEngine;
 
-namespace Limbie.Control.Shared
+namespace Limbie.Control.Shared.In
 {
     [MoonSharpUserData]
     public class RobotJoint

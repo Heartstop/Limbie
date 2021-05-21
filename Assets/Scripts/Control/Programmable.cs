@@ -1,72 +1,103 @@
 using UnityEngine;
 using MoonSharp.Interpreter;
 using System;
-using Limbie.Control.Shared;
 using System.Linq;
 
-public class Programmable : MonoBehaviour
+namespace Limbie.Control
 {
-    private Script script;
-    private Table state;
-
-    public string Code { get; set; } = string.Empty;
-    public RobotActor robotActor { get; set; }
-
-    void Start()
+    public class Programmable : MonoBehaviour
     {
-        RegisterUserData();
+        private Script script;
+        private Table state;
 
-        script = new Script(CoreModules.Preset_HardSandbox);
-        state = new Table(script);
-    }
+        public string Code = string.Empty;
+        public RobotActor robotActor;
+        public float TopMotorSpeed = 10;
 
-    private void RegisterUserData()
-    {
-        UserData.RegisterType<Time>();
-        UserData.RegisterAssembly();
-    }
-
-    void Update()
-    {
-        SetGlobals();
-        RemoveFunctions(state);
-        Execute();
-    }
-
-    private static void RemoveFunctions(Table table)
-    {
-        var keys = table.Pairs
-            .Where(kvp => kvp.Value.Type == DataType.Function)
-            .Select(kvp => kvp.Key)
-            .ToArray();
-
-        foreach (var key in keys)
-            table.Remove(key);
-    }
-
-    private Commands Execute()
-    {
-        try
+        void Start()
         {
-            DynValue result = script.DoString(Code, state);
-            return result.ToObject<Commands>();
-        } catch (Exception e)
-        {
-            return new Commands { Error = e.ToString() };
+            RegisterUserData();
+
+            script = new Script(CoreModules.Preset_HardSandbox);
+            state = new Table(script);
         }
-    }
 
-    private void SetGlobals()
-    {
-        state["time"] = typeof(Time);
-        
-        if(robotActor != null)
+        private void RegisterUserData()
         {
-            state["limbs"] = new Limbs(robotActor);
+            UserData.RegisterType<Time>();
+            UserData.RegisterAssembly();
         }
-        else
+
+        void Update()
         {
-            state.Remove("limbs");
+            SetGlobals();
+            RemoveFunctions(state);
+            var commands = ExecuteCode();
+            if(commands != null)
+                ExecuteCommands(commands);
+        }
+
+        private void ExecuteCommands(Shared.Out.Commands commands)
+        {
+            ExecuteCommandLimbs(commands);
+        }
+
+        private void ExecuteCommandLimbs(Shared.Out.Commands commands)
+        {
+            var limbs = commands.Limbs;
+            var maxMotorSpeed = Mathf.Abs(TopMotorSpeed);
+            var minMotorSpeed = -maxMotorSpeed;
+
+
+            void UpdateHinges(Shared.Out.Limb limb, ref HingeJoint2D hinge)
+            {
+                var motor = hinge.motor;
+                motor.motorSpeed = Mathf.Min(maxMotorSpeed, Mathf.Max(minMotorSpeed, limb.MotorSpeed));
+                hinge.motor = motor;
+            }
+
+            UpdateHinges(limbs.awayLimb, ref robotActor.awayLimb);
+            UpdateHinges(limbs.facingLimb, ref robotActor.facingLimb);
+            UpdateHinges(limbs.outerAwayLimb, ref robotActor.outerAwayLimb);
+            UpdateHinges(limbs.outerFacingLimb, ref robotActor.outerFacingLimb);
+        }
+
+        private static void RemoveFunctions(Table table)
+        {
+            var keys = table.Pairs
+                .Where(kvp => kvp.Value.Type == DataType.Function)
+                .Select(kvp => kvp.Key)
+                .ToArray();
+
+            foreach (var key in keys)
+                table.Remove(key);
+        }
+
+        private Shared.Out.Commands ExecuteCode()
+        {
+            try
+            {
+                DynValue result = script.DoString(Code, state);
+                return result.ToObject<Shared.Out.Commands>();
+            }
+            catch (Exception e)
+            {
+                return new Shared.Out.Commands { Error = e.ToString() };
+            }
+        }
+
+        private void SetGlobals()
+        {
+            state["time"] = typeof(Time);
+
+            if (robotActor != null)
+            {
+                state["limbs"] = new Shared.In.Limbs(robotActor);
+            }
+            else
+            {
+                state.Remove("limbs");
+            }
         }
     }
 }

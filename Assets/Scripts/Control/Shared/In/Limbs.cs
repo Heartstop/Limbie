@@ -1,6 +1,6 @@
 using MoonSharp.Interpreter;
 
-namespace Limbie.Control.Shared
+namespace Limbie.Control.Shared.In
 {
     [MoonSharpUserData]
     public class Limbs
