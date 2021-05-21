@@ -1,7 +1,8 @@
 using UnityEngine;
 using MoonSharp.Interpreter;
 using System;
-using System.Collections.Generic;
+using Limbie.Control.Shared;
+using System.Linq;
 
 public class Programmable : MonoBehaviour
 {
@@ -26,7 +27,19 @@ public class Programmable : MonoBehaviour
     void Update()
     {
         SetGlobals();
+        RemoveFunctions(state);
         Execute();
+    }
+
+    private static void RemoveFunctions(Table table)
+    {
+        var keys = table.Pairs
+            .Where(kvp => kvp.Value.Type == DataType.Function)
+            .Select(kvp => kvp.Key)
+            .ToArray();
+
+        foreach (var key in keys)
+            table.Remove(key);
     }
 
     private Commands Execute()
@@ -37,17 +50,12 @@ public class Programmable : MonoBehaviour
             return result.ToObject<Commands>();
         } catch (Exception e)
         {
-            return new Commands { Messages = new string[] { e.ToString() } };
+            return new Commands { Error = e.ToString() };
         }
     }
 
     private void SetGlobals()
     {
         state["time"] = typeof(Time);
-    }
-
-    class Commands
-    {
-        public IList<string> Messages { get; set; }
     }
 }
