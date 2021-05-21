@@ -10,6 +10,7 @@ public class Programmable : MonoBehaviour
     private Table state;
 
     public string Code { get; set; } = string.Empty;
+    public RobotActor robotActor { get; set; }
 
     void Start()
     {
@@ -22,6 +23,7 @@ public class Programmable : MonoBehaviour
     private void RegisterUserData()
     {
         UserData.RegisterType<Time>();
+        UserData.RegisterAssembly();
     }
 
     void Update()
@@ -57,5 +59,14 @@ public class Programmable : MonoBehaviour
     private void SetGlobals()
     {
         state["time"] = typeof(Time);
+        
+        if(robotActor != null)
+        {
+            state["limbs"] = new Limbs(robotActor);
+        }
+        else
+        {
+            state.Remove("limbs");
+        }
     }
 }
