@@ -5,9 +5,9 @@ namespace Limbie.Control.Shared.Out
     [MoonSharpUserData]
     public class Limbs
     {
-        public Limb facingLimb { get; }
-        public Limb outerFacingLimb { get; }
-        public Limb awayLimb { get; }
-        public Limb outerAwayLimb { get; }
+        public Limb facingLimb { get; set; } = new Limb();
+        public Limb outerFacingLimb { get; set; } = new Limb();
+        public Limb awayLimb { get; set; } = new Limb();
+        public Limb outerAwayLimb { get; set; } = new Limb();
     }
 }

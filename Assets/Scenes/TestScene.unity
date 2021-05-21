@@ -884,6 +884,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 40, y: 0}
   m_Pivot: {x: 1, y: 0.5}
+--- !u!114 &345063837 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114104653646104232, guid: 79a74f96889fc1c429f043e7fa8caf72, type: 3}
+  m_PrefabInstance: {fileID: 1637747488}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de94cfaa22da0174182d12da3ce15cbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &377124969
 GameObject:
   m_ObjectHideFlags: 0
@@ -2986,6 +2997,8 @@ GameObject:
   - component: {fileID: 1858113702}
   - component: {fileID: 1858113701}
   - component: {fileID: 1858113703}
+  - component: {fileID: 1858113705}
+  - component: {fileID: 1858113704}
   m_Layer: 0
   m_Name: Actor
   m_TagString: Untagged
@@ -3047,6 +3060,36 @@ MonoBehaviour:
   outerFacingLimb: {fileID: 1432427187}
   awayLimb: {fileID: 868695917}
   outerAwayLimb: {fileID: 1328629679}
+--- !u!114 &1858113704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858113700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87cc42f5ae37e38459f372a69284eb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CodeEditor: {fileID: 345063837}
+  Programmable: {fileID: 1858113705}
+  constantDeploy: 1
+--- !u!114 &1858113705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858113700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b30fa929a8fe53448a014557771bcbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Code: 
+  robotActor: {fileID: 1858113703}
+  TopMotorSpeed: 10
 --- !u!1 &1927113636
 GameObject:
   m_ObjectHideFlags: 0
