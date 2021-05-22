@@ -5,17 +5,17 @@ namespace Limbie.Control.Shared.In
     [MoonSharpUserData]
     public class Limbs
     {
-        public Limbs(RobotActor robotActor)
+        public Limbs(RobotActor robotActor, bool mirrored)
         {
-            Facing = new RobotJoint(robotActor.facingLimb);
-            OuterFacing = new RobotJoint(robotActor.outerFacingLimb);
-            Away = new RobotJoint(robotActor.awayLimb);
-            OuterAway = new RobotJoint(robotActor.outerAwayLimb);
+            Facing = new Limb(robotActor.facingLimb, mirrored);
+            OuterFacing = new Limb(robotActor.outerFacingLimb, mirrored);
+            Away = new Limb(robotActor.awayLimb, mirrored);
+            OuterAway = new Limb(robotActor.outerAwayLimb, mirrored);
         }
 
-        public RobotJoint Facing { get; }
-        public RobotJoint OuterFacing { get; }
-        public RobotJoint Away { get; }
-        public RobotJoint OuterAway { get; }
+        public Limb Facing { get; }
+        public Limb OuterFacing { get; }
+        public Limb Away { get; }
+        public Limb OuterAway { get; }
     }
 }

@@ -10,7 +10,6 @@ namespace Limbie.Control
     public class Programmable : MonoBehaviour
     {
         private Script script;
-        private Table state;
         private Shared.In.Print printer;
         private StringBuilder textOutput;
 
@@ -21,15 +20,22 @@ namespace Limbie.Control
         public float TopMotorSpeed = 10;
         public Text Output;
 
+        private bool Mirrored { get { return RobotActor.transform.localScale.x < 0; } } 
+
         void Start()
         {
             RegisterUserData();
 
             textOutput = new StringBuilder();
             printer = new Shared.In.Print(ref textOutput);
+            ResetScriptEngine();
+        }
+
+        public void ResetScriptEngine()
+        {
             script = new Script(CoreModules.Preset_HardSandbox);
             script.Options.UseLuaErrorLocations = false;
-            state = new Table(script);
+            script.Options.DebugPrint = s => textOutput.AppendLine(s);
         }
 
         private void RegisterUserData()
@@ -41,7 +47,7 @@ namespace Limbie.Control
         void Update()
         {
             SetGlobals();
-            RemoveFunctions(state);
+            RemoveFunctions(script.Globals);
             var commands = ExecuteCode();
             ExecuteCommands(commands);
         }
@@ -69,12 +75,11 @@ namespace Limbie.Control
             var maxMotorSpeed = Mathf.Abs(TopMotorSpeed);
             var minMotorSpeed = -maxMotorSpeed;
 
-            var mirrored = RobotActor.transform.localScale.x < 0;
             void UpdateHinges(Shared.Out.Limb limb, ref HingeJoint2D hinge)
             {
                 var motor = hinge.motor;
                 var speed = Mathf.Min(maxMotorSpeed, Mathf.Max(minMotorSpeed, limb.MotorSpeed));
-                motor.motorSpeed = mirrored ? -speed : speed;
+                motor.motorSpeed = Mirrored ? -speed : speed;
                 hinge.motor = motor;
 
                 hinge.useMotor = limb.MotorEnabled;
@@ -99,6 +104,7 @@ namespace Limbie.Control
 
         private Shared.Out.Commands ExecuteCode()
         {
+            var state = script.Globals;
             static Shared.Out.Commands makeCommands()
             {
                 return new Shared.Out.Commands();
@@ -122,9 +128,10 @@ namespace Limbie.Control
                 limbsGlobal = "_limbs",
                 bodyGlobal = "_body",
                 outGlobal = "_out";
-            
+
+            var state = script.Globals;
             state[timeGlobal] = typeof(Time);
-            state[limbsGlobal] = new Shared.In.Limbs(RobotActor);
+            state[limbsGlobal] = new Shared.In.Limbs(RobotActor, Mirrored);
             state[bodyGlobal] = new Shared.In.Body(RobotBody);
             state[outGlobal] = printer;
         }
