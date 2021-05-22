@@ -3,6 +3,7 @@ using MoonSharp.Interpreter;
 using System;
 using System.Linq;
 using UnityEngine.UI;
+using System.Text;
 
 namespace Limbie.Control
 {
@@ -10,19 +11,24 @@ namespace Limbie.Control
     {
         private Script script;
         private Table state;
+        private Shared.In.Print printer;
+        private StringBuilder textOutput;
 
         [HideInInspector]
         public string Code = string.Empty;
-        public RobotActor robotActor;
-        public GameObject robotBody;
+        public RobotActor RobotActor;
+        public GameObject RobotBody;
         public float TopMotorSpeed = 10;
-        public Text output;
+        public Text Output;
 
         void Start()
         {
             RegisterUserData();
 
+            textOutput = new StringBuilder();
+            printer = new Shared.In.Print(ref textOutput);
             script = new Script(CoreModules.Preset_HardSandbox);
+            script.Options.UseLuaErrorLocations = false;
             state = new Table(script);
         }
 
@@ -48,11 +54,13 @@ namespace Limbie.Control
 
         private void ExecuteOutput(Shared.Out.Commands commands)
         {
-            if (output == null)
+            if (Output == null)
                 return;
 
-            if (!string.Equals(output.text, commands.Error, StringComparison.Ordinal))
-                output.text = commands.Error;
+            textOutput.AppendLine(commands.Error);
+            var text = textOutput.ToString();
+            textOutput.Clear();
+            Output.text = text;
         }
 
         private void ExecuteCommandLimbs(Shared.Out.Commands commands)
@@ -61,7 +69,7 @@ namespace Limbie.Control
             var maxMotorSpeed = Mathf.Abs(TopMotorSpeed);
             var minMotorSpeed = -maxMotorSpeed;
 
-            var mirrored = robotActor.transform.localScale.x < 0;
+            var mirrored = RobotActor.transform.localScale.x < 0;
             void UpdateHinges(Shared.Out.Limb limb, ref HingeJoint2D hinge)
             {
                 var motor = hinge.motor;
@@ -70,10 +78,10 @@ namespace Limbie.Control
                 hinge.motor = motor;
             }
 
-            UpdateHinges(limbs.AwayLimb, ref robotActor.awayLimb);
-            UpdateHinges(limbs.FacingLimb, ref robotActor.facingLimb);
-            UpdateHinges(limbs.OuterAwayLimb, ref robotActor.outerAwayLimb);
-            UpdateHinges(limbs.OuterFacingLimb, ref robotActor.outerFacingLimb);
+            UpdateHinges(limbs.AwayLimb, ref RobotActor.awayLimb);
+            UpdateHinges(limbs.FacingLimb, ref RobotActor.facingLimb);
+            UpdateHinges(limbs.OuterAwayLimb, ref RobotActor.outerAwayLimb);
+            UpdateHinges(limbs.OuterFacingLimb, ref RobotActor.outerFacingLimb);
         }
 
         private static void RemoveFunctions(Table table)
@@ -95,7 +103,7 @@ namespace Limbie.Control
             }
             try
             {
-                state["_out"] = (Func<Shared.Out.Commands>)makeCommands;
+                state["_cmd"] = (Func<Shared.Out.Commands>)makeCommands;
                 DynValue result = script.DoString(Code, state);
                 return result.ToObject<Shared.Out.Commands>() ?? new Shared.Out.Commands();
             }
@@ -110,11 +118,13 @@ namespace Limbie.Control
             const string
                 timeGlobal = "_time",
                 limbsGlobal = "_limbs",
-                bodyGlobal = "_body";
+                bodyGlobal = "_body",
+                outGlobal = "_out";
+            
             state[timeGlobal] = typeof(Time);
-
-            state[limbsGlobal] = new Shared.In.Limbs(robotActor);
-            state[bodyGlobal] = new Shared.In.Body(robotBody);
+            state[limbsGlobal] = new Shared.In.Limbs(RobotActor);
+            state[bodyGlobal] = new Shared.In.Body(RobotBody);
+            state[outGlobal] = printer;
         }
     }
 }
