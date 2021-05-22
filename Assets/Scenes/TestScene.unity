@@ -4121,17 +4121,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1755455457}
   m_CullTransparentMesh: 1
---- !u!114 &1782149818 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114104653646104232, guid: 79a74f96889fc1c429f043e7fa8caf72, type: 3}
-  m_PrefabInstance: {fileID: 1637747488}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de94cfaa22da0174182d12da3ce15cbe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1785802356
 GameObject:
   m_ObjectHideFlags: 0
@@ -4293,7 +4282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87cc42f5ae37e38459f372a69284eb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CodeEditor: {fileID: 1782149818}
+  CodeEditor: {fileID: 345063837}
   Programmable: {fileID: 1858113705}
   constantDeploy: 1
 --- !u!114 &1858113705
@@ -4311,6 +4300,7 @@ MonoBehaviour:
   Code: 
   robotActor: {fileID: 1858113703}
   TopMotorSpeed: 10
+  output: {fileID: 478843487}
 --- !u!1 &1927113636
 GameObject:
   m_ObjectHideFlags: 0

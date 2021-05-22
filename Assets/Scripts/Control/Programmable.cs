@@ -41,6 +41,7 @@ namespace Limbie.Control
 
         private void ExecuteCommands(Shared.Out.Commands commands)
         {
+            ExecuteOutput(commands);
             ExecuteCommandLimbs(commands);
         }
 
