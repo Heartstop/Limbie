@@ -6,5 +6,6 @@ namespace Limbie.Control.Shared.Out
     public class Limb
     {
         public float MotorSpeed { get; set; }
+        public bool MotorEnabled { get; set; } = true;
     }
 }

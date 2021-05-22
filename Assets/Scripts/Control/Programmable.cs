@@ -76,6 +76,8 @@ namespace Limbie.Control
                 var speed = Mathf.Min(maxMotorSpeed, Mathf.Max(minMotorSpeed, limb.MotorSpeed));
                 motor.motorSpeed = mirrored ? -speed : speed;
                 hinge.motor = motor;
+
+                hinge.useMotor = limb.MotorEnabled;
             }
 
             UpdateHinges(limbs.AwayLimb, ref RobotActor.awayLimb);
