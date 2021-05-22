@@ -80,10 +80,10 @@ namespace Limbie.Control
                 hinge.useMotor = limb.MotorEnabled;
             }
 
-            UpdateHinges(limbs.AwayLimb, ref RobotActor.awayLimb);
-            UpdateHinges(limbs.FacingLimb, ref RobotActor.facingLimb);
-            UpdateHinges(limbs.OuterAwayLimb, ref RobotActor.outerAwayLimb);
-            UpdateHinges(limbs.OuterFacingLimb, ref RobotActor.outerFacingLimb);
+            UpdateHinges(limbs.Away, ref RobotActor.awayLimb);
+            UpdateHinges(limbs.Facing, ref RobotActor.facingLimb);
+            UpdateHinges(limbs.OuterAway, ref RobotActor.outerAwayLimb);
+            UpdateHinges(limbs.OuterFacing, ref RobotActor.outerFacingLimb);
         }
 
         private static void RemoveFunctions(Table table)
