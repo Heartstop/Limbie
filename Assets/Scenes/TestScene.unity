@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2034120}
   m_Layer: 0
-  m_Name: Meshes
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4299,6 +4299,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Code: 
   robotActor: {fileID: 1858113703}
+  robotBody: {fileID: 2034119}
   TopMotorSpeed: 10
   output: {fileID: 478843487}
 --- !u!1 &1927113636
