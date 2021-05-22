@@ -8,10 +8,36 @@ public class RobotActor : MonoBehaviour
     public HingeJoint2D awayLimb;
     public HingeJoint2D outerAwayLimb;
 
+    private Vector3 _resetPosistion;
+    private Quaternion _resetRotationFacingLimb;
+    private Quaternion _resetRotationOuterFacingLimb;
+    private Quaternion _resetRotationAwayLimb;
+    private Quaternion _resetTransformOuterAwayLimb;
+
+    public void ResetActor()
+    {
+        this.transform.position = _resetPosistion;
+
+        facingLimb.transform.rotation = _resetRotationFacingLimb;
+
+        outerFacingLimb.transform.rotation = _resetRotationOuterFacingLimb;
+        
+        awayLimb.transform.rotation = _resetRotationAwayLimb;
+
+        outerAwayLimb.transform.rotation = _resetTransformOuterAwayLimb;
+    }
+
     void Start()
     {
+        _resetPosistion = this.transform.position;
+        
         if(facingLimb != null && outerFacingLimb != null && awayLimb != null && outerAwayLimb != null)
         {
+            _resetRotationFacingLimb = facingLimb.transform.rotation;
+            _resetRotationOuterFacingLimb = outerFacingLimb.transform.rotation;
+            _resetRotationAwayLimb = awayLimb.transform.rotation;
+            _resetTransformOuterAwayLimb = outerAwayLimb.transform.rotation;
+
             HingeJoint2D[] hinges = new HingeJoint2D[]{ facingLimb, outerFacingLimb, awayLimb, outerAwayLimb};
             foreach (var hinge in hinges)
             {
