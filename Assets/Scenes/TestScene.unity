@@ -1524,10 +1524,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  robotActor: {fileID: 381078036}
-  robotBody: {fileID: 717526875}
+  RobotActor: {fileID: 381078036}
+  RobotBody: {fileID: 717526875}
   TopMotorSpeed: 300
-  output: {fileID: 478843487}
+  Output: {fileID: 1497925540}
 --- !u!114 &381078036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5835,10 +5835,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Code: 
-  robotActor: {fileID: 1858113703}
-  robotBody: {fileID: 2034119}
+  RobotActor: {fileID: 1858113703}
+  RobotBody: {fileID: 2034119}
   TopMotorSpeed: 300
-  output: {fileID: 478843487}
+  Output: {fileID: 478843487}
 --- !u!1 &1927113636
 GameObject:
   m_ObjectHideFlags: 0
