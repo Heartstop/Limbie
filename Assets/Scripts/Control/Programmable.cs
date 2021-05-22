@@ -2,6 +2,7 @@ using UnityEngine;
 using MoonSharp.Interpreter;
 using System;
 using System.Linq;
+using UnityEngine.UI;
 
 namespace Limbie.Control
 {
@@ -9,10 +10,12 @@ namespace Limbie.Control
     {
         private Script script;
         private Table state;
-
+        
+        [HideInInspector]
         public string Code = string.Empty;
         public RobotActor robotActor;
         public float TopMotorSpeed = 10;
+        public Text output;
 
         void Start()
         {
@@ -41,6 +44,15 @@ namespace Limbie.Control
             ExecuteCommandLimbs(commands);
         }
 
+        private void ExecuteOutput(Shared.Out.Commands commands)
+        {
+            if (output == null)
+                return;
+
+            if(!string.Equals(output.text, commands.Error, StringComparison.Ordinal))
+                output.text = commands.Error;
+        }
+
         private void ExecuteCommandLimbs(Shared.Out.Commands commands)
         {
             var limbs = commands.Limbs;
@@ -55,10 +67,10 @@ namespace Limbie.Control
                 hinge.motor = motor;
             }
 
-            UpdateHinges(limbs.awayLimb, ref robotActor.awayLimb);
-            UpdateHinges(limbs.facingLimb, ref robotActor.facingLimb);
-            UpdateHinges(limbs.outerAwayLimb, ref robotActor.outerAwayLimb);
-            UpdateHinges(limbs.outerFacingLimb, ref robotActor.outerFacingLimb);
+            UpdateHinges(limbs.AwayLimb, ref robotActor.awayLimb);
+            UpdateHinges(limbs.FacingLimb, ref robotActor.facingLimb);
+            UpdateHinges(limbs.OuterAwayLimb, ref robotActor.outerAwayLimb);
+            UpdateHinges(limbs.OuterFacingLimb, ref robotActor.outerFacingLimb);
         }
 
         private static void RemoveFunctions(Table table)
@@ -80,7 +92,7 @@ namespace Limbie.Control
             }
             try
             {
-                state["createOut"] = (Func<Shared.Out.Commands>)makeCommands;
+                state["_out"] = (Func<Shared.Out.Commands>)makeCommands;
                 DynValue result = script.DoString(Code, state);
                 return result.ToObject<Shared.Out.Commands>() ?? new Shared.Out.Commands();
             }
@@ -92,15 +104,18 @@ namespace Limbie.Control
 
         private void SetGlobals()
         {
-            state["time"] = typeof(Time);
+            const string
+                timeGlobal = "_time",
+                limbsGlobal = "_limbs";
+            state[timeGlobal] = typeof(Time);
 
             if (robotActor != null)
             {
-                state["limbs"] = new Shared.In.Limbs(robotActor);
+                state[limbsGlobal] = new Shared.In.Limbs(robotActor);
             }
             else
             {
-                state.Remove("limbs");
+                state.Remove(limbsGlobal);
             }
         }
     }
