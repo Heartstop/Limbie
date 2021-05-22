@@ -10,10 +10,11 @@ namespace Limbie.Control
     {
         private Script script;
         private Table state;
-        
+
         [HideInInspector]
         public string Code = string.Empty;
         public RobotActor robotActor;
+        public GameObject robotBody;
         public float TopMotorSpeed = 10;
         public Text output;
 
@@ -50,7 +51,7 @@ namespace Limbie.Control
             if (output == null)
                 return;
 
-            if(!string.Equals(output.text, commands.Error, StringComparison.Ordinal))
+            if (!string.Equals(output.text, commands.Error, StringComparison.Ordinal))
                 output.text = commands.Error;
         }
 
@@ -60,11 +61,12 @@ namespace Limbie.Control
             var maxMotorSpeed = Mathf.Abs(TopMotorSpeed);
             var minMotorSpeed = -maxMotorSpeed;
 
-
+            var mirrored = robotActor.transform.localScale.x < 0;
             void UpdateHinges(Shared.Out.Limb limb, ref HingeJoint2D hinge)
             {
                 var motor = hinge.motor;
-                motor.motorSpeed = Mathf.Min(maxMotorSpeed, Mathf.Max(minMotorSpeed, limb.MotorSpeed));
+                var speed = Mathf.Min(maxMotorSpeed, Mathf.Max(minMotorSpeed, limb.MotorSpeed));
+                motor.motorSpeed = mirrored ? -speed : speed;
                 hinge.motor = motor;
             }
 
@@ -107,17 +109,12 @@ namespace Limbie.Control
         {
             const string
                 timeGlobal = "_time",
-                limbsGlobal = "_limbs";
+                limbsGlobal = "_limbs",
+                bodyGlobal = "_body";
             state[timeGlobal] = typeof(Time);
 
-            if (robotActor != null)
-            {
-                state[limbsGlobal] = new Shared.In.Limbs(robotActor);
-            }
-            else
-            {
-                state.Remove(limbsGlobal);
-            }
+            state[limbsGlobal] = new Shared.In.Limbs(robotActor);
+            state[bodyGlobal] = new Shared.In.Body(robotBody);
         }
     }
 }
