@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class RobotActor : MonoBehaviour
 {
-    private int _maxMotorTorque = 200;
+    private int _maxMotorTorque = 3000;
     public HingeJoint2D facingLimb;
     public HingeJoint2D outerFacingLimb;
     public HingeJoint2D awayLimb;
