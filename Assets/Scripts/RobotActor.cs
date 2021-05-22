@@ -18,6 +18,11 @@ public class RobotActor : MonoBehaviour
 
     public void ResetActor()
     {
+        var rigidBodies = GetComponentsInChildren<Rigidbody2D>(); 
+        foreach(var rigidBody in rigidBodies){
+            rigidBody.velocity = Vector2.zero;
+            rigidBody.angularVelocity = 0f;
+        }
         this.transform.position = _resetPosistion;
 
         this.transform.rotation = _resetRotation;
