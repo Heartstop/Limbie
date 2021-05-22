@@ -1,3 +1,4 @@
+using Limbie.Control;
 using UnityEngine;
 
 public class RobotActor : MonoBehaviour
@@ -33,6 +34,8 @@ public class RobotActor : MonoBehaviour
         awayLimb.transform.rotation = _resetRotationAwayLimb;
 
         outerAwayLimb.transform.rotation = _resetTransformOuterAwayLimb;
+
+        GetComponent<Programmable>().ResetScriptEngine();
     }
 
     void Start()
