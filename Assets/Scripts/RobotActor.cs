@@ -9,6 +9,7 @@ public class RobotActor : MonoBehaviour
     public HingeJoint2D outerAwayLimb;
 
     private Vector3 _resetPosistion;
+    private Quaternion _resetRotation;
     private Quaternion _resetRotationFacingLimb;
     private Quaternion _resetRotationOuterFacingLimb;
     private Quaternion _resetRotationAwayLimb;
@@ -17,6 +18,8 @@ public class RobotActor : MonoBehaviour
     public void ResetActor()
     {
         this.transform.position = _resetPosistion;
+
+        this.transform.rotation = _resetRotation;
 
         facingLimb.transform.rotation = _resetRotationFacingLimb;
 
@@ -30,6 +33,7 @@ public class RobotActor : MonoBehaviour
     void Start()
     {
         _resetPosistion = this.transform.position;
+        _resetRotation = this.transform.rotation;
         
         if(facingLimb != null && outerFacingLimb != null && awayLimb != null && outerAwayLimb != null)
         {
