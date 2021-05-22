@@ -220,7 +220,7 @@ Transform:
   - {fileID: 149114034}
   - {fileID: 880469350}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &61793924
 GameObject:
@@ -431,7 +431,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &73498552
 PrefabInstance:
@@ -666,6 +666,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79a74f96889fc1c429f043e7fa8caf72, type: 3}
+--- !u!114 &73498553 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114104653646104232, guid: 79a74f96889fc1c429f043e7fa8caf72, type: 3}
+  m_PrefabInstance: {fileID: 73498552}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de94cfaa22da0174182d12da3ce15cbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &78278556
 GameObject:
   m_ObjectHideFlags: 0
@@ -1479,7 +1490,7 @@ GameObject:
   - component: {fileID: 381078035}
   - component: {fileID: 381078034}
   m_Layer: 0
-  m_Name: Actor (1)
+  m_Name: Right Actor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1497,7 +1508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87cc42f5ae37e38459f372a69284eb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CodeEditor: {fileID: 345063837}
+  CodeEditor: {fileID: 73498553}
   Programmable: {fileID: 381078035}
   constantDeploy: 1
 --- !u!114 &381078035
@@ -1514,6 +1525,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Code: 
   robotActor: {fileID: 381078036}
+  robotBody: {fileID: 717526875}
   TopMotorSpeed: 300
   output: {fileID: 478843487}
 --- !u!114 &381078036
@@ -1568,7 +1580,7 @@ Transform:
   - {fileID: 717526876}
   - {fileID: 112896301}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &412076366
 GameObject:
@@ -2576,7 +2588,7 @@ GameObject:
   m_Component:
   - component: {fileID: 717526876}
   m_Layer: 0
-  m_Name: Meshes
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4243,7 +4255,7 @@ RectTransform:
   - {fileID: 1927113637}
   - {fileID: 416689398}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5735,7 +5747,7 @@ GameObject:
   - component: {fileID: 1858113705}
   - component: {fileID: 1858113704}
   m_Layer: 0
-  m_Name: Actor
+  m_Name: Left Actor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
