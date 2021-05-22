@@ -33,8 +33,7 @@ namespace Limbie.Control
             SetGlobals();
             RemoveFunctions(state);
             var commands = ExecuteCode();
-            if(commands != null)
-                ExecuteCommands(commands);
+            ExecuteCommands(commands);
         }
 
         private void ExecuteCommands(Shared.Out.Commands commands)
@@ -75,14 +74,19 @@ namespace Limbie.Control
 
         private Shared.Out.Commands ExecuteCode()
         {
+            static Shared.Out.Commands makeCommands()
+            {
+                return new Shared.Out.Commands();
+            }
             try
             {
+                state["createOut"] = (Func<Shared.Out.Commands>)makeCommands;
                 DynValue result = script.DoString(Code, state);
-                return result.ToObject<Shared.Out.Commands>();
+                return result.ToObject<Shared.Out.Commands>() ?? new Shared.Out.Commands();
             }
             catch (Exception e)
             {
-                return new Shared.Out.Commands { Error = e.ToString() };
+                return new Shared.Out.Commands { Error = e.Message };
             }
         }
 
